@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:icon="@drawable/ic_sort"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_all"
+            android:title="@string/menu_all" />
+        <item
+            android:id="@+id/menu_hour"
+            android:title="@string/menu_hour" />
+        <item
+            android:id="@+id/menu_day"
+            android:title="@string/menu_day" />
+        <item
+            android:id="@+id/menu_mouth"
+            android:title="@string/menu_mouth" />
+    </group>
+</menu>

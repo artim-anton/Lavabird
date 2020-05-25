@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Lavabird</string>
+    <string name="bnt_text">Start</string>
+    <string name="text_notifications">There’s no notifications yet</string>
+    <string name="img_no_notifications">img_no_notifications</string>
+    <string name="menu_all">All</string>
+    <string name="menu_hour">Per Hour</string>
+    <string name="menu_day">Per Day</string>
+    <string name="menu_mouth">Per Mouth</string>
+</resources>

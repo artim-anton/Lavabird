@@ -7,4 +7,5 @@
     <string name="menu_hour">Per Hour</string>
     <string name="menu_day">Per Day</string>
     <string name="menu_mouth">Per Mouth</string>
+    <string name="service_name">name</string>
 </resources>

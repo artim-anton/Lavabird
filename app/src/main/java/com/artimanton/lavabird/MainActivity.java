@@ -36,9 +36,11 @@ public class MainActivity extends AppCompatActivity {
         if (isMyServiceRunning(ForegroundService.class)){
             stopService();
             button.setBackgroundResource(R.drawable.btn_style_start);
+            button.setText("Start");
         }else{
             startService();
             button.setBackgroundResource(R.drawable.btn_style_stop);
+            button.setText("Stop");
 
         }
 

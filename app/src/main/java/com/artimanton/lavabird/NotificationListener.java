@@ -39,15 +39,15 @@ public class NotificationListener extends NotificationListenerService {
         String title = extras.getString("android.title");
         String text = extras.getCharSequence("android.text").toString();
         int id1 = extras.getInt(Notification.EXTRA_SMALL_ICON);
-        Bitmap id = sbn.getNotification().largeIcon;
-
+        //Bitmap id = sbn.getNotification().largeIcon;
+        Bitmap id = (Bitmap) extras.get(Notification.EXTRA_LARGE_ICON);
 
         Log.i("Package",pack);
         Log.i("Ticker",ticker);
         Log.i("Title",title);
         Log.i("Text",text);
 
-        Intent msgrcv = new Intent("Msg");
+        Intent msgrcv = new Intent("com.artimanton.lavabird");
         msgrcv.putExtra("package", pack);
         msgrcv.putExtra("ticker", ticker);
         msgrcv.putExtra("title", title);
@@ -56,9 +56,10 @@ public class NotificationListener extends NotificationListenerService {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             id.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] byteArray = stream.toByteArray();
-            msgrcv.putExtra("icon",byteArray);
+            msgrcv.putExtra("icon", byteArray);
         }
         LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+        sendBroadcast(msgrcv);
 
 
     }

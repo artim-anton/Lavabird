@@ -8,4 +8,10 @@
     <string name="menu_day">Per Day</string>
     <string name="menu_mouth">Per Mouth</string>
     <string name="service_name">name</string>
+
+    <!-- Strings related to the Alert Dialog -->
+    <string name="notification_listener_service">"Notification Listener Service"</string>
+    <string name="notification_listener_service_explanation">"For the the app. to work you need to enable the Notification Listener Service. Enable it now?"</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

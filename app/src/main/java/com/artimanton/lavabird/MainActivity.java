@@ -5,13 +5,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.DrawableUtils;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +26,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
+    NotificationListener notificationListener;
     @BindView(R.id.button) Button button;
 
     @Override
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        Intent intent = new Intent(getApplicationContext(), NotificationListener.class);
+        startService(intent);
 
     }
     public void buttonClick(View view) {
@@ -37,11 +43,13 @@ public class MainActivity extends AppCompatActivity {
             stopService();
             button.setBackgroundResource(R.drawable.btn_style_start);
             button.setText("Start");
+
+
+
         }else{
             startService();
             button.setBackgroundResource(R.drawable.btn_style_stop);
             button.setText("Stop");
-
         }
 
 

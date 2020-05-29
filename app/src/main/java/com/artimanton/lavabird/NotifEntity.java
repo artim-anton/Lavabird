@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class NotifEntity {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public long id;
     public String packages;
     public String title;

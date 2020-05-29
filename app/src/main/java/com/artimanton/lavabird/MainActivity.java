@@ -34,6 +34,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ReceiveBroadcastReceiver imageChangeBroadcastReceiver;
     private AlertDialog enableNotificationListenerAlertDialog;
     private NotifDao notifDao;
+    private AppDatabase db;
 
     @BindView(R.id.button) Button button;
     @BindView(R.id.textView) TextView tvMsg;
@@ -57,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
-        AppDatabase db = App.getInstance().getDatabase();
+        db = App.getInstance().getDatabase();
         db =  Room.databaseBuilder(this, AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
         notifDao = db.notifDao();
+
 
         if(!isNotificationServiceEnabled()){
             enableNotificationListenerAlertDialog = buildNotificationServiceAlertDialog();
@@ -161,6 +163,19 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            List<NotifEntity> notifEntities = notifDao.getAll();
+            String info = "";
+
+            for(NotifEntity notifEntity: notifEntities){
+                long id = notifEntity.id;
+                String packages = notifEntity.packages;
+                String title = notifEntity.title;
+                String text = notifEntity.text;
+                info = info + "\n\n"+id+"\n Title: "+title+"\n Text: "+text;
+            }
+
+            tvMsg.setText(info);
+
             //int receivedNotificationCode = intent.getIntExtra("Notification Code",-1);
             String packages = intent.getStringExtra("package");
             String title = intent.getStringExtra("title");
@@ -171,15 +186,6 @@ public class MainActivity extends AppCompatActivity {
             image.setImageBitmap(bitmap);}
 
             if(text != null) {
-                NotifEntity notifEntity = new NotifEntity();
-                notifEntity.id = 1;
-                notifEntity.packages = packages;
-                notifEntity.title = title;
-                notifEntity.text = text;
-
-                notifDao.insert(notifEntity);
-
-
 
                     String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                             Settings.Secure.ANDROID_ID);
@@ -188,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                     DateFormat df = new SimpleDateFormat("ddMMyyyyHHmmssSSS");
                     String date = df.format(Calendar.getInstance().getTime());
 
-                    tvMsg.setText("Notification : "  + "\nPackages : " + packages + "\nTitle : " + title + "\nText : " + text + "\nId : " + date+ "\nandroid_id : " + android_id+ "\ndevicemodel : " + devicemodel);
+                    //tvMsg.setText("Notification : "  + "\nPackages : " + packages + "\nTitle : " + title + "\nText : " + text + "\nId : " + date+ "\nandroid_id : " + android_id+ "\ndevicemodel : " + devicemodel);
 
                 }
             }

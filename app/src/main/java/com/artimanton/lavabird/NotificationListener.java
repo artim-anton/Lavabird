@@ -12,16 +12,22 @@ import android.util.Log;
 
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.room.Room;
 
 import java.io.ByteArrayOutputStream;
 
 
 public class NotificationListener extends NotificationListenerService {
     Context context;
+    private NotifDao notifDao;
+    private AppDatabase db;
 
     @Override
 
     public void onCreate() {
+        db = App.getInstance().getDatabase();
+        db =  Room.databaseBuilder(this, AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
+        notifDao = db.notifDao();
 
         super.onCreate();
         context = getApplicationContext();
@@ -41,6 +47,13 @@ public class NotificationListener extends NotificationListenerService {
         int id1 = extras.getInt(Notification.EXTRA_SMALL_ICON);
         //Bitmap id = sbn.getNotification().largeIcon;
         Bitmap id = (Bitmap) extras.get(Notification.EXTRA_LARGE_ICON);
+
+        NotifEntity notifEntity = new NotifEntity();
+        notifEntity.packages = pack;
+        notifEntity.title = title;
+        notifEntity.text = text;
+
+        notifDao.insert(notifEntity);
 
         Log.i("Package",pack);
         Log.i("Ticker",ticker);

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.DrawableUtils;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.room.Room;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ReceiveBroadcastReceiver imageChangeBroadcastReceiver;
     private AlertDialog enableNotificationListenerAlertDialog;
+    private NotifDao notifDao;
 
     @BindView(R.id.button) Button button;
     @BindView(R.id.textView) TextView tvMsg;
@@ -54,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+
+        AppDatabase db = App.getInstance().getDatabase();
+        db =  Room.databaseBuilder(this, AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
+        notifDao = db.notifDao();
 
         if(!isNotificationServiceEnabled()){
             enableNotificationListenerAlertDialog = buildNotificationServiceAlertDialog();
@@ -164,6 +171,14 @@ public class MainActivity extends AppCompatActivity {
             image.setImageBitmap(bitmap);}
 
             if(text != null) {
+                NotifEntity notifEntity = new NotifEntity();
+                notifEntity.id = 1;
+                notifEntity.packages = packages;
+                notifEntity.title = title;
+                notifEntity.text = text;
+
+                notifDao.insert(notifEntity);
+
 
 
                     String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
@@ -174,9 +189,7 @@ public class MainActivity extends AppCompatActivity {
                     String date = df.format(Calendar.getInstance().getTime());
 
                     tvMsg.setText("Notification : "  + "\nPackages : " + packages + "\nTitle : " + title + "\nText : " + text + "\nId : " + date+ "\nandroid_id : " + android_id+ "\ndevicemodel : " + devicemodel);
-                    /**
-                     Log.d("DetailsEzraatext2 :", "Notification : " + receivedNotificationCode + "\nPackages : " + packages + "\nTitle : " + title + "\nText : " + text + "\nId : " + date+ "\nandroid_id : " + android_id+ "\ndevicemodel : " + devicemodel);
-                     */
+
                 }
             }
         }

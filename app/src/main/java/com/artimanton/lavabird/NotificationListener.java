@@ -58,7 +58,7 @@ public class NotificationListener extends NotificationListenerService {
             byte[] byteArray = stream.toByteArray();
             msgrcv.putExtra("icon", byteArray);
         }
-        LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+        //LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
         sendBroadcast(msgrcv);
 
 

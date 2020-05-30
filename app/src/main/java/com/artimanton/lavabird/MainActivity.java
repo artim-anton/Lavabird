@@ -3,6 +3,8 @@ package com.artimanton.lavabird;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.room.Room;
 
 import android.app.ActivityManager;
@@ -22,9 +24,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.artimanton.lavabird.fragments.EmptyFragment;
+import com.artimanton.lavabird.fragments.ItemFragment;
 import com.artimanton.lavabird.model.NotifDao;
 import com.artimanton.lavabird.model.NotifEntity;
 import com.artimanton.lavabird.services.ForegroundService;
@@ -40,21 +45,42 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     private static final String ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners";
     private static final String ACTION_NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
+    final static String TAG_1 = "FRAGMENT_1";
+    final static String TAG_2 = "FRAGMENT_2";
+
+    @BindView(R.id.container) FrameLayout container;
+    FragmentManager myFragmentManager;
+    FragmentTransaction fragmentTransaction;
+    EmptyFragment emptyFragment;
+    ItemFragment itemFragment;
 
     private ReceiveBroadcastReceiver imageChangeBroadcastReceiver;
     private AlertDialog enableNotificationListenerAlertDialog;
+
     private NotifDao notifDao;
     private AppDatabase db;
 
     @BindView(R.id.button) Button button;
-    @BindView(R.id.textView) TextView tvMsg;
-    @BindView(R.id.imageView) ImageView image;
+    //@BindView(R.id.textView) TextView tvMsg;
+    //@BindView(R.id.imageView) ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        emptyFragment = new EmptyFragment();
+        itemFragment = new ItemFragment();
+        myFragmentManager = getSupportFragmentManager();
+        if (savedInstanceState == null) {
+
+            // при первом запуске программы
+            fragmentTransaction = myFragmentManager.beginTransaction();
+            // добавляем в контейнер при помощи метода add()
+            fragmentTransaction.add(R.id.container, emptyFragment);
+            fragmentTransaction.commit();
+        }
 
         db = App.getInstance().getDatabase();
         db =  Room.databaseBuilder(this, AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
@@ -79,12 +105,14 @@ public class MainActivity extends AppCompatActivity {
             button.setBackgroundResource(R.drawable.btn_style_start);
             button.setText("Start");
 
-
-
         }else{
             startService();
             button.setBackgroundResource(R.drawable.btn_style_stop);
             button.setText("Stop");
+            fragmentTransaction = myFragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container, itemFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
 
 
@@ -171,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 info = info + "\n\n"+id+"\n Title: "+title+"\n Text: "+text;
             }
 
-            tvMsg.setText(info);
+            //tvMsg.setText(info);
 
             //int receivedNotificationCode = intent.getIntExtra("Notification Code",-1);
             String packages = intent.getStringExtra("package");
@@ -180,7 +208,8 @@ public class MainActivity extends AppCompatActivity {
             byte[] byteArray = intent.getByteArrayExtra("icon");
             if(byteArray!= null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            image.setImageBitmap(bitmap);}
+            //image.setImageBitmap(bitmap);
+            }
 
             if(text != null) {
 

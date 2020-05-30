@@ -16,10 +16,6 @@ import com.artimanton.lavabird.R;
  */
 public class EmptyFragment extends Fragment {
 
-    public EmptyFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -1,4 +1,4 @@
-package com.artimanton.lavabird;
+package com.artimanton.lavabird.services;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -11,6 +11,9 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
+import com.artimanton.lavabird.MainActivity;
+import com.artimanton.lavabird.R;
 
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";

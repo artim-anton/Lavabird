@@ -1,23 +1,26 @@
-package com.artimanton.lavabird;
+package com.artimanton.lavabird.services;
 
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.room.Room;
+
+import com.artimanton.lavabird.App;
+import com.artimanton.lavabird.AppDatabase;
+import com.artimanton.lavabird.model.NotifDao;
+import com.artimanton.lavabird.model.NotifEntity;
 
 import java.io.ByteArrayOutputStream;
 
 
-public class NotificationListener extends NotificationListenerService {
+public class NotificationListener extends android.service.notification.NotificationListenerService {
     Context context;
     private NotifDao notifDao;
     private AppDatabase db;

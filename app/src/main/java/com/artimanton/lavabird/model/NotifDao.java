@@ -1,10 +1,12 @@
-package com.artimanton.lavabird;
+package com.artimanton.lavabird.model;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.artimanton.lavabird.model.NotifEntity;
 
 import java.util.List;
 

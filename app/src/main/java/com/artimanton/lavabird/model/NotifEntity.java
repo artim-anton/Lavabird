@@ -1,4 +1,4 @@
-package com.artimanton.lavabird;
+package com.artimanton.lavabird.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

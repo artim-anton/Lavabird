@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.artimanton.lavabird.R;
-import com.artimanton.lavabird.NotifEntity;
+import com.artimanton.lavabird.model.NotifEntity;
 
 import java.util.List;
 

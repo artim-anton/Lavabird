@@ -6,7 +6,7 @@
     tools:context=".fragments.ItemFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/record_list"
+        android:id="@+id/notif_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/view_item_notif"/>

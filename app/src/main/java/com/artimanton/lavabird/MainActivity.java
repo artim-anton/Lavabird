@@ -82,10 +82,6 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.commit();
         }
 
-        db = App.getInstance().getDatabase();
-        db =  Room.databaseBuilder(this, AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
-        notifDao = db.notifDao();
-
 
         if(!isNotificationServiceEnabled()){
             enableNotificationListenerAlertDialog = buildNotificationServiceAlertDialog();
@@ -109,10 +105,7 @@ public class MainActivity extends AppCompatActivity {
             startService();
             button.setBackgroundResource(R.drawable.btn_style_stop);
             button.setText("Stop");
-            fragmentTransaction = myFragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container, itemFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+
         }
 
 
@@ -188,7 +181,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            List<NotifEntity> notifEntities = notifDao.getAll();
+            fragmentTransaction = myFragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container, itemFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
+           /* List<NotifEntity> notifEntities = notifDao.getAll();
             String info = "";
 
             for(NotifEntity notifEntity: notifEntities){
@@ -199,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 info = info + "\n\n"+id+"\n Title: "+title+"\n Text: "+text;
             }
 
-            //tvMsg.setText(info);
+            tvMsg.setText(info);*/
 
             //int receivedNotificationCode = intent.getIntExtra("Notification Code",-1);
             String packages = intent.getStringExtra("package");

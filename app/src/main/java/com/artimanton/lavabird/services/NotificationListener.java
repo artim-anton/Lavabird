@@ -18,6 +18,11 @@ import com.artimanton.lavabird.model.NotifDao;
 import com.artimanton.lavabird.model.NotifEntity;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class NotificationListener extends android.service.notification.NotificationListenerService {
@@ -51,10 +56,22 @@ public class NotificationListener extends android.service.notification.Notificat
         //Bitmap id = sbn.getNotification().largeIcon;
         Bitmap id = (Bitmap) extras.get(Notification.EXTRA_LARGE_ICON);
 
+        // Текущее время
+        Date currentDate = new Date();
+        // Форматирование времени как "день.месяц.год"
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String date = dateFormat.format(currentDate);
+        // Форматирование времени как "часы:минуты:секунды"
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        String time = timeFormat.format(currentDate);
+
+
         NotifEntity notifEntity = new NotifEntity();
         notifEntity.packages = pack;
         notifEntity.title = title;
         notifEntity.text = text;
+        notifEntity.date = date;
+        notifEntity.time = time;
 
         notifDao.insert(notifEntity);
 

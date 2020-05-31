@@ -74,11 +74,12 @@ public class MainActivity extends AppCompatActivity {
         itemFragment = new ItemFragment();
         myFragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
-
-            // при первом запуске программы
             fragmentTransaction = myFragmentManager.beginTransaction();
-            // добавляем в контейнер при помощи метода add()
             fragmentTransaction.add(R.id.container, emptyFragment);
+            fragmentTransaction.commit();
+        }else{
+            fragmentTransaction = myFragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.container, itemFragment);
             fragmentTransaction.commit();
         }
 

@@ -12,5 +12,6 @@ public class NotifEntity {
     public String packages;
     public String title;
     public String text;
-
+    public String date;
+    public String time;
 }

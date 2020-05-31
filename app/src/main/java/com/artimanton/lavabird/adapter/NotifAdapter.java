@@ -35,6 +35,9 @@ public class NotifAdapter extends RecyclerView.Adapter<NotifAdapter.RecordViewHo
 
         holder.etPack.setText(notifEntity.packages);
         holder.etText.setText(notifEntity.text);
+        holder.etData.setText(notifEntity.date);
+        holder.etTime.setText(notifEntity.time);
+
     }
 
 
@@ -51,8 +54,8 @@ public class NotifAdapter extends RecyclerView.Adapter<NotifAdapter.RecordViewHo
             super(itemView);
             etPack = itemView.findViewById(R.id.et_pack);
             etText = itemView.findViewById(R.id.et_text);
-            //etData = itemView.findViewById(R.id.et_date);
-            //etTime = itemView.findViewById(R.id.et_time);
+            etData = itemView.findViewById(R.id.et_date);
+            etTime = itemView.findViewById(R.id.et_time);
         }
     }
 }

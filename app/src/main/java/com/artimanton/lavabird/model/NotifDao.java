@@ -1,5 +1,6 @@
 package com.artimanton.lavabird.model;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,6 +13,9 @@ import java.util.List;
 
 @Dao
 public interface NotifDao {
+    @Query("SELECT * FROM NotifEntity LIMIT 1")
+    LiveData<NotifEntity> loadlastTask();
+
     @Query("SELECT * FROM notifEntity")
     List<NotifEntity> getAll();
 

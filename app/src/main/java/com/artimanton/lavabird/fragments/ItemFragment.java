@@ -33,7 +33,7 @@ import butterknife.BindView;
  */
 public class ItemFragment extends Fragment {
 
-    //@BindView(R.id.notif_list) RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     private List<NotifEntity> notifs;
     private NotifAdapter adapter;
 

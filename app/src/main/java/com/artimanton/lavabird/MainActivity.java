@@ -2,6 +2,7 @@ package com.artimanton.lavabird;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,17 +28,21 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.artimanton.lavabird.adapter.NotifAdapter;
 import com.artimanton.lavabird.fragments.EmptyFragment;
 import com.artimanton.lavabird.fragments.ItemFragment;
 import com.artimanton.lavabird.model.NotifDao;
 import com.artimanton.lavabird.model.NotifEntity;
 import com.artimanton.lavabird.services.ForegroundService;
+import com.artimanton.lavabird.services.NotificationListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         db =  Room.databaseBuilder(this, AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
         notifDao = db.notifDao();
         notifs = notifDao.getAll();
-        if (notifs == null) {
+        if (notifs.size() == 0 || notifs == null) {
             fragmentTransaction = myFragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.container, emptyFragment);
             fragmentTransaction.commit();
@@ -96,10 +101,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Finally we register a receiver to tell the MainActivity when a notification has been received
-        imageChangeBroadcastReceiver = new ReceiveBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.artimanton.lavabird");
-        registerReceiver(imageChangeBroadcastReceiver,intentFilter);
+
+
 
     }
     public void buttonClick(View view) {
@@ -144,10 +147,17 @@ public class MainActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, ForegroundService.class);
         serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
         ContextCompat.startForegroundService(this, serviceIntent);
+        imageChangeBroadcastReceiver = new ReceiveBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.artimanton.lavabird");
+        registerReceiver(imageChangeBroadcastReceiver,intentFilter);
+
     }
     public void stopService() {
         Intent serviceIntent = new Intent(this, ForegroundService.class);
         stopService(serviceIntent);
+        /*imageChangeBroadcastReceiver = new ReceiveBroadcastReceiver();
+        unregisterReceiver(imageChangeBroadcastReceiver);*/
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -156,6 +166,14 @@ public class MainActivity extends AppCompatActivity {
             if (serviceClass.getName().equals(service.service.getClassName())) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    private static boolean isNotificationListenerServiceEnabled(Context context) {
+        Set<String> packageNames = NotificationManagerCompat.getEnabledListenerPackages(context);
+        if (packageNames.contains("com.artimanton.lavabird")) {
+            return true;
         }
         return false;
     }
@@ -187,11 +205,13 @@ public class MainActivity extends AppCompatActivity {
     public class ReceiveBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            notifs = notifDao.getAll();
+            NotifAdapter notifAdapter = new NotifAdapter(notifs);
+            notifAdapter.notifyDataSetChanged();
             fragmentTransaction = myFragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container, itemFragment);
-            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+
 
            /* List<NotifEntity> notifEntities = notifDao.getAll();
             String info = "";

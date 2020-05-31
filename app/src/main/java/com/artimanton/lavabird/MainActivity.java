@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private NotifDao notifDao;
     private AppDatabase db;
+    private List<NotifEntity> notifs;
 
     @BindView(R.id.button) Button button;
     //@BindView(R.id.textView) TextView tvMsg;
@@ -73,7 +74,12 @@ public class MainActivity extends AppCompatActivity {
         emptyFragment = new EmptyFragment();
         itemFragment = new ItemFragment();
         myFragmentManager = getSupportFragmentManager();
-        if (savedInstanceState == null) {
+
+        db = App.getInstance().getDatabase();
+        db =  Room.databaseBuilder(this, AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
+        notifDao = db.notifDao();
+        notifs = notifDao.getAll();
+        if (notifs == null) {
             fragmentTransaction = myFragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.container, emptyFragment);
             fragmentTransaction.commit();

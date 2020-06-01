@@ -79,9 +79,8 @@ public class NotificationListener extends android.service.notification.Notificat
             byte[] byteArray = stream.toByteArray();
             notifEntity.byteArray = byteArray;
         }
-
-
         notifDao.insert(notifEntity);
+
 
         Log.i("Package",pack);
         Log.i("Ticker",ticker);
@@ -99,7 +98,6 @@ public class NotificationListener extends android.service.notification.Notificat
             byte[] byteArray = stream.toByteArray();
             msgrcv.putExtra("icon", byteArray);
         }
-        //LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
         sendBroadcast(msgrcv);
 
 

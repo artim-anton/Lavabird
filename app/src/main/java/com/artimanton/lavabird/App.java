@@ -6,6 +6,7 @@ import androidx.room.Room;
 
 import com.artimanton.lavabird.model.NotifDao;
 
+
 public class App extends Application {
     public static App instance;
 
@@ -21,6 +22,7 @@ public class App extends Application {
                 .build();
 
         notifDao = database.notifDao();
+
     }
 
     public static App getInstance() {

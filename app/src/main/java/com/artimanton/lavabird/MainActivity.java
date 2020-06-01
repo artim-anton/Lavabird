@@ -1,11 +1,15 @@
 package com.artimanton.lavabird;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.room.Room;
 
 import android.app.ActivityManager;
@@ -47,6 +51,8 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static java.lang.StrictMath.log;
+
 public class MainActivity extends AppCompatActivity {
     private static final String ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners";
     private static final String ACTION_NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
@@ -67,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
     private List<NotifEntity> notifs;
 
     @BindView(R.id.button) Button button;
-    //@BindView(R.id.textView) TextView tvMsg;
-    //@BindView(R.id.imageView) ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
             enableNotificationListenerAlertDialog = buildNotificationServiceAlertDialog();
             enableNotificationListenerAlertDialog.show();
         }
-
-        // Finally we register a receiver to tell the MainActivity when a notification has been received
 
 
 
@@ -153,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startService() {
         Intent serviceIntent = new Intent(this, ForegroundService.class);
-        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+        serviceIntent.putExtra("inputExtra", "Foreground Service");
         ContextCompat.startForegroundService(this, serviceIntent);
         imageChangeBroadcastReceiver = new ReceiveBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -213,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
     public class ReceiveBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             /*notifs = notifDao.getAll();
             NotifAdapter notifAdapter = new NotifAdapter(notifs);
             notifAdapter.notifyDataSetChanged();

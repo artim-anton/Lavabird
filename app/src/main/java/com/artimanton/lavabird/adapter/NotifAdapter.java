@@ -10,13 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.artimanton.lavabird.R;
 import com.artimanton.lavabird.model.NotifEntity;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class NotifAdapter extends RecyclerView.Adapter<NotifAdapter.RecordViewHolder> {

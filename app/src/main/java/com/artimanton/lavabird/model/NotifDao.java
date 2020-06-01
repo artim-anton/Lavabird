@@ -18,6 +18,9 @@ public interface NotifDao {
     @Query("SELECT * FROM notifEntity")
     List<NotifEntity> getAll();
 
+    @Query("SELECT * FROM notifEntity")
+    LiveData<List<NotifEntity>> getAllLiveData();
+
     @Query("SELECT * FROM notifEntity WHERE id = :id")
     NotifEntity getById(long id);
 

@@ -1,9 +1,12 @@
 package com.artimanton.lavabird.adapter;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,7 +42,11 @@ public class NotifAdapter extends RecyclerView.Adapter<NotifAdapter.RecordViewHo
         holder.etText.setText(notifEntity.text);
         holder.etData.setText(notifEntity.date);
         holder.etTime.setText(notifEntity.time);
-
+        byte[] byteArray = notifEntity.byteArray;
+        if(byteArray!= null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            holder.imgBitmap.setImageBitmap(bitmap);
+        }
     }
 
 
@@ -51,6 +58,7 @@ public class NotifAdapter extends RecyclerView.Adapter<NotifAdapter.RecordViewHo
 
     class RecordViewHolder extends RecyclerView.ViewHolder{
         private TextView etPack, etText,  etTime, etData;
+        private ImageView imgBitmap;
 
         private RecordViewHolder(View itemView) {
             super(itemView);
@@ -58,6 +66,8 @@ public class NotifAdapter extends RecyclerView.Adapter<NotifAdapter.RecordViewHo
             etText = itemView.findViewById(R.id.et_text);
             etData = itemView.findViewById(R.id.et_date);
             etTime = itemView.findViewById(R.id.et_time);
+            imgBitmap = itemView.findViewById(R.id.img_bitmap);
+
         }
     }
 }

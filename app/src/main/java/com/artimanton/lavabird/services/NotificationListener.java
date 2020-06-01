@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
@@ -22,6 +23,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -33,9 +35,8 @@ public class NotificationListener extends android.service.notification.Notificat
     @Override
 
     public void onCreate() {
-        db = App.getInstance().getDatabase();
-        db =  Room.databaseBuilder(this, AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
-        notifDao = db.notifDao();
+        ReadRoom readRoom = new ReadRoom();
+        readRoom.execute();
 
         super.onCreate();
         context = getApplicationContext();
@@ -54,7 +55,7 @@ public class NotificationListener extends android.service.notification.Notificat
         String text = extras.getCharSequence("android.text").toString();
         int id1 = extras.getInt(Notification.EXTRA_SMALL_ICON);
         //Bitmap id = sbn.getNotification().largeIcon;
-        Bitmap id = (Bitmap) extras.get(Notification.EXTRA_LARGE_ICON);
+        Bitmap bitmap = (Bitmap) extras.get(Notification.EXTRA_LARGE_ICON);
 
         // Текущее время
         Date currentDate = new Date();
@@ -72,6 +73,13 @@ public class NotificationListener extends android.service.notification.Notificat
         notifEntity.text = text;
         notifEntity.date = date;
         notifEntity.time = time;
+        if(bitmap != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            notifEntity.byteArray = byteArray;
+        }
+
 
         notifDao.insert(notifEntity);
 
@@ -85,9 +93,9 @@ public class NotificationListener extends android.service.notification.Notificat
         msgrcv.putExtra("ticker", ticker);
         msgrcv.putExtra("title", title);
         msgrcv.putExtra("text", text);
-        if(id != null) {
+        if(bitmap != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            id.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] byteArray = stream.toByteArray();
             msgrcv.putExtra("icon", byteArray);
         }
@@ -102,5 +110,29 @@ public class NotificationListener extends android.service.notification.Notificat
     public void onNotificationRemoved(StatusBarNotification sbn) {
         Log.i("Msg","Notification Removed");
 
+    }
+
+    class ReadRoom extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            db = App.getInstance().getDatabase();
+            db =  Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
+            notifDao = db.notifDao();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+        }
     }
 }

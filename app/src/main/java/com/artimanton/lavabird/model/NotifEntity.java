@@ -1,6 +1,7 @@
 package com.artimanton.lavabird.model;
 
 import android.graphics.Bitmap;
+import android.media.Image;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -14,4 +15,5 @@ public class NotifEntity {
     public String text;
     public String date;
     public String time;
+    public byte[] byteArray;
 }

@@ -123,7 +123,6 @@ public class NotificationListener extends android.service.notification.Notificat
         @Override
         protected Void doInBackground(Void... voids) {
             db = App.getInstance().getDatabase();
-            db =  Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
             notifDao = db.notifDao();
 
             return null;

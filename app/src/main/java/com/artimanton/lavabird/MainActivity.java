@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         myFragmentManager = getSupportFragmentManager();
 
         db = App.getInstance().getDatabase();
-        db =  Room.databaseBuilder(this, AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
         notifDao = db.notifDao();
         notifs = notifDao.getAll();
         if (notifs.size() == 0 || notifs == null) {
@@ -130,10 +129,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        NotifAdapter notifAdapter;
         switch(id){
             case R.id.menu_all :
+                notifDao.getAll();
+                notifAdapter = new NotifAdapter(notifs);
+                notifAdapter.notifyDataSetChanged();
                 return true;
             case R.id.menu_hour:
+                notifDao.getById(1);
+                notifAdapter = new NotifAdapter(notifs);
+                notifAdapter.notifyDataSetChanged();
                 return true;
             case R.id.menu_day:
                 return true;
@@ -142,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     public void startService() {
         Intent serviceIntent = new Intent(this, ForegroundService.class);
@@ -205,12 +213,12 @@ public class MainActivity extends AppCompatActivity {
     public class ReceiveBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            notifs = notifDao.getAll();
+            /*notifs = notifDao.getAll();
             NotifAdapter notifAdapter = new NotifAdapter(notifs);
             notifAdapter.notifyDataSetChanged();
             fragmentTransaction = myFragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container, itemFragment);
-            fragmentTransaction.commit();
+            fragmentTransaction.commit();*/
 
 
            /* List<NotifEntity> notifEntities = notifDao.getAll();

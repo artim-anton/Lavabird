@@ -14,6 +14,7 @@ import java.util.List;
 @Dao
 public interface NotifDao {
 
+
     @Query("SELECT * FROM notifEntity")
     List<NotifEntity> getAll();
 

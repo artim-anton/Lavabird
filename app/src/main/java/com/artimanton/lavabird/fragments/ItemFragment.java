@@ -66,7 +66,7 @@ public class ItemFragment extends Fragment {
         return rootView;
     }
 
-    class ReadRoom extends AsyncTask<Void, Void, Void> {
+    public class ReadRoom extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -76,9 +76,7 @@ public class ItemFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            db = App.getInstance().getDatabase();
-            db =  Room.databaseBuilder(getActivity(), AppDatabase.class, "MyDatabase").allowMainThreadQueries().build();
-            notifDao = db.notifDao();
+            notifDao = App.getInstance().getNotifDao();
             notifs = notifDao.getAll();
 
             return null;

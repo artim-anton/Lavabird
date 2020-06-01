@@ -38,7 +38,7 @@ public class NotifAdapter extends RecyclerView.Adapter<NotifAdapter.RecordViewHo
     public void onBindViewHolder(@NonNull RecordViewHolder holder, int position) {
         final NotifEntity notifEntity = list.get(position);
 
-        holder.etPack.setText(notifEntity.packages);
+        holder.etPack.setText(notifEntity.title);
         holder.etText.setText(notifEntity.text);
         holder.etData.setText(notifEntity.date);
         holder.etTime.setText(notifEntity.time);
